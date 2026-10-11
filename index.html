@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PawPal ♡</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", sans-serif;
+      background: #ffe6ee;
+      color: #925d70;
+    }
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+h1 {
+      margin: 0;
+      color: #c77794;
+      font-size: 44px;
+    }
+
+    .subtitle {
+      margin: 10px 0 32px;
+      color: #b68193;
+      font-size: 14px;
+    }
+.dog-area {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: #ffd4e2;
+      box-shadow: 0 15px 40px #df9bb51c;
+    }
+    .dog {
+      border: none;
+      background: transparent;
+      font-size: 120px;
+      cursor: pointer;
+      animation: breathe 2s ease-in-out infinite;
+      transition: transform 0.2s;
+      user-select: none;
+    }
+
+    .dog:hover {
+      transform: scale(1.1);
+    }
+    .dog.happy {
+      animation: jump 0.45s ease;
+    }
+
+    h2 {
+      margin: 28px 0 8px;
+      font-size: 24px;
+    }
+
+    .message {
+      min-height: 22px;
+      margin: 0 0 24px;
+      color: #b68193;
+      font-size: 14px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+.btn {
+      padding: 13px 20px;
+      border: none;
+      border-radius: 30px;
+      background: #e99ab5;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #d98ba530;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #db83a2;
+      transform: translateY(-3px);
+    }
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .floating-heart {
+      position: absolute;
+      left: var(--x);
+      bottom: 50px;
+      font-size: 25px;
+      pointer-events: none;
+      animation: floatUp 1.3s ease-out forwards;
+    }
+.tail {
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+      font-size: 30px;
+      opacity: 0;
+    }
+
+    .tail.wagging {
+      opacity: 1;
+      animation: wag 0.12s infinite alternate;
+    }
+footer {
+      position: fixed;
+      bottom: 18px;
+      color: #c18b9e;
+      font-size: 12px;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: translateY(0);
+      }
+50% {
+        transform: translateY(-7px);
+      }
+    }
+
+    @keyframes jump {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-20px) scale(1.12);
+      }
+    }
+
+    @keyframes floatUp {
+      from {
+        opacity: 1;
+        transform: translateY(0) scale(0.7) rotate(-10deg);
+      }
+to {
+        opacity: 0;
+        transform: translateY(-150px) scale(1.4) rotate(15deg);
+      }
+    }
+
+    @keyframes wag {
+      from {
+        transform: rotate(-25deg);
+      }
+
+      to {
+        transform: rotate(25deg);
+      }
+    }
+    @media (max-width: 400px) {
+      .dog-area {
+        width: 210px;
+        height: 210px;
+      }
+
+      .dog {
+        font-size: 105px;
+      }
+
+      .buttons {
+        max-width: 300px;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+      }
+    }
+    .dog {
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.dog-area {
+  overflow: visible;
+  animation: floatArea 3s ease-in-out infinite;
+}
+
+.dog.dancing {
+  animation: puppyDance 0.65s ease-in-out;
+}
+
+.dog.chewing {
+  animation: puppyChew 0.55s ease-in-out 3;
+}
+dog.tilting {
+  animation: puppyTilt 0.7s ease-in-out;
+}
+
+/* Прыжки и танец */
+@keyframes puppyDance {
+  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
+  20% { transform: translateY(-28px) rotate(-12deg) scale(1.1); }
+  40% { transform: translateY(0) rotate(12deg) scale(1); }
+  60% { transform: translateY(-18px) rotate(-10deg) scale(1.08); }
+  80% { transform: translateY(0) rotate(8deg) scale(1); }
+}
+
+@keyframes puppyChew {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.06); }
+  75% { transform: rotate(8deg) scale(0.96); }
+}
+@keyframes puppyTilt {
+  0%, 100% { transform: rotate(0); }
+  35% { transform: rotate(-18deg) translateY(-5px); }
+  70% { transform: rotate(12deg); }
+}
+
+@keyframes floatArea {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* Летающие украшения */
+.ambient {
+  position: fixed;
+  bottom: -50px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: ambientFloat linear forwards;
+}
+.app > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes ambientFloat {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+  15% { opacity: 0.65; }
+  85% { opacity: 0.5; }
+  100% {
+    transform: translateY(-110vh) rotate(35deg) scale(1.2);
+    opacity: 0;
+  }
+}
+/* Косточка при кормлении */
+.food-pop {
+  position: absolute;
+  z-index: 3;
+  font-size: 38px;
+  pointer-events: none;
+  animation: foodJump 0.9s ease-out forwards;
+}
+
+@keyframes foodJump {
+  0% { transform: translateY(40px) scale(0.5) rotate(-30deg); opacity: 0; }
+  35% { transform: translateY(-45px) scale(1.2) rotate(20deg); opacity: 1; }
+  100% { transform: translateY(-95px) scale(0.8) rotate(-20deg); opacity: 0; }
+}
+.dog:focus-visible {
+  outline: 2px solid #c77794;
+  outline-offset: 8px;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dog-area {
+    animation: none;
+  }
+
+  .ambient {
+    display: none;
+  }
+}
+
+
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <h1>PawPal ♡</h1>
+    <p class="subtitle">
+      A little space for your best friend
+    </p>
+    <div class="dog-area" id="dogArea">
+      <span class="tail" id="tail">〰️</span>
+
+      <button class="dog" id="dog" aria-label="Погладить собачку">
+        🐶
+      </button>
+    </div>
+
+    <h2 id="title">Hi, bestie! 💕</h2>
+
+    <p class="message" id="message">
+      Tap the puppy to give it some love
+    </p>
+
+    <div class="buttons">
+        <button class="btn" id="petBtn">♡ Pet me</button>
+      <button class="btn" id="feedBtn">🦴 Feed (3)</button>
+      <button class="btn" id="barkBtn">🔊 Bark</button>
+    </div>
+
+    <footer>made with love ♡</footer>
+  </main>
+
+  <script>
+    const dog = document.getElementById("dog");
+    const dogArea = document.getElementById("dogArea");
+    const title = document.getElementById("title");
+    const message = document.getElementById("message");
+    const tail = document.getElementById("tail");
+    const feedBtn = document.getElementById("feedBtn");
+    let food = 3;
+    let heartId = 0;
+    let audioContext;
+
+    function showMessage(heading, text) {
+      title.textContent = heading;
+      message.textContent = text;
+    }
+    function hearts() {
+      for (let i = 0; i < 3; i++) {
+        const heart = document.createElement("span");
+
+        heart.className = "floating-heart";
+        heart.textContent = ["💗", "💕", "♡"][i];
+        heart.style.setProperty(
+          "--x",
+          `${25 + Math.random() * 50}%`
+        );
+
+        heart.dataset.id = ++heartId;
+        dogArea.appendChild(heart);
+        setTimeout(() => heart.remove(), 1400);
+      }
+    }
+
+    function petDog() {
+      dog.classList.remove("happy");
+      void dog.offsetWidth;
+      dog.classList.add("happy");
+
+      tail.classList.add("wagging");
+
+      showMessage(
+        "Woof! I love you! 💗",
+        "You made my little heart happy!"
+      );
+      hearts();
+
+      setTimeout(() => {
+        dog.classList.remove("happy");
+        tail.classList.remove("wagging");
+      }, 700);
+    }
+    function feedDog() {
+      if (food <= 0) {
+        showMessage(
+          "Yummy! 🥺",
+          "No treats left. Come back later!"
+        );
+        return;
+      }
+
+      food--;
+      feedBtn.textContent = `🦴 Feed (${food})`;
+
+      showMessage(
+        "Nom nom nom! ",
+        "Thank you for the yummy treat!"
+      );
+       hearts();
+    }
+
+    function bark() {
+      try {
+        const AudioContextClass =
+          window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+          showMessage("Woof! 🐶", "Hello, bestie!");
+          return;
+        }
+audioContext ??= new AudioContextClass();
+
+        if (audioContext.state === "suspended") {
+          audioContext.resume();
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const volume = audioContext.createGain();
+        const now = audioContext.currentTime;
+
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(450, now);
+        oscillator.frequency.exponentialRampToValueAtTime(
+          180,
+          now + 0.16
+        );
+        volume.gain.setValueAtTime(0.25, now);
+        volume.gain.exponentialRampToValueAtTime(
+          0.001,
+          now + 0.2
+        );
+
+        oscillator.connect(volume);
+        volume.connect(audioContext.destination);
+
+        oscillator.start(now);
+        oscillator.stop(now + 0.2);
+         showMessage("WOOF WOOF! 🐕", "I'm here, bestie!");
+      } catch (error) {
+        showMessage("Woof! 🐶", "Hello, bestie!");
+      }
+    }
+
+    dog.addEventListener("click", petDog);
+    document.getElementById("petBtn")
+      .addEventListener("click", petDog);
+
+    feedBtn.addEventListener("click", feedDog);
+    document.getElementById("barkBtn")
+      .addEventListener("click", bark);
+      const decorations = ["💗", "♡", "✨", "💕", "🌸"];
+
+function createDecoration() {
+  const item = document.createElement("span");
+
+  item.className = "ambient";
+  item.textContent =
+    decorations[Math.floor(Math.random() * decorations.length)];
+
+  item.style.left = Math.random() * 95 + "vw";
+  item.style.fontSize = 14 + Math.random() * 20 + "px";
+  item.style.animationDuration = 5 + Math.random() * 7 + "s";
+
+  document.body.appendChild(item);
+
+  setTimeout(() => item.remove(), 12000);
+}
+setInterval(createDecoration, 900);
+
+  </script>
+</body>
+</html>
